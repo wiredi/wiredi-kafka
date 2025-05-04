@@ -1,0 +1,13 @@
+apache:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:29092
+      group-id: test
+
+wiredi:
+  kafka:
+    consumer:
+      await-assignment: false
+    producer:
+      bootstrap-server: localhost:29092
+  check-processors: false

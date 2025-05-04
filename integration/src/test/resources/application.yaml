@@ -1,0 +1,16 @@
+wiredi:
+  kafka:
+    producer:
+      bootstrap-server: localhost:29092
+    consumer:
+      apache:
+        fetch.max.wait.ms: 1000
+      auto-offset-reset: earliest
+      await-assignments: true
+  check-processors: false
+
+apache:
+  kafka:
+    consumer:
+      group-id: test
+      bootstrap-servers: localhost:29092
