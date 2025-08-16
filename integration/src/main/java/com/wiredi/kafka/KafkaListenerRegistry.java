@@ -9,7 +9,7 @@ import com.wiredi.kafka.consumer.container.ConsumerRecordHandler;
 import com.wiredi.kafka.consumer.container.KafkaListenerContainer;
 import com.wiredi.kafka.executor.KafkaListenerExecutor;
 import com.wiredi.logging.Logging;
-import com.wiredi.runtime.WireRepository;
+import com.wiredi.runtime.WireContainer;
 import com.wiredi.runtime.async.AsyncLoader;
 import com.wiredi.runtime.async.StateFull;
 import com.wiredi.runtime.async.state.State;
@@ -77,7 +77,7 @@ public class KafkaListenerRegistry implements Eager, StateFull<List<KafkaListene
     }
 
     @Override
-    public void setup(WireRepository wireRepository) {
+    public void setup(WireContainer wireRepository) {
         AsyncLoader.run(() -> {
             try {
                 Timed.of(() -> {

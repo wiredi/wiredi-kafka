@@ -17,8 +17,8 @@ public class ErrorHandlingTest {
     @Test
     public void errorsAreRetried() throws ExecutionException, InterruptedException {
         // Arrange
-        ExampleListener exampleListener = instance.wireRepository().get(ExampleListener.class);
-        KafkaPublisher publisher = instance.wireRepository().get(KafkaPublisher.class);
+        ExampleListener exampleListener = instance.wireContainer().get(ExampleListener.class);
+        KafkaPublisher publisher = instance.wireContainer().get(KafkaPublisher.class);
         exampleListener.prime(3);
 
         // Act

@@ -1,6 +1,6 @@
 package com.wiredi.kafka;
 
-import com.wiredi.runtime.WireRepository;
+import com.wiredi.runtime.WireContainer;
 import com.wiredi.runtime.WiredApplication;
 import com.wiredi.runtime.WiredApplicationInstance;
 import com.wiredi.runtime.time.Timed;
@@ -10,7 +10,7 @@ public class ConsumerExample {
 
     public static void main(String[] args) {
         WiredApplicationInstance application = WiredApplication.start();
-        WireRepository repository = application.wireRepository();
+        WireContainer repository = application.wireContainer();
         TestService testService = repository.get(TestService.class);
         Timed timed = testService.runTestScenario();
         application.shutdown();

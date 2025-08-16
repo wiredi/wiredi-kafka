@@ -3,13 +3,12 @@ package com.wiredi.kafka.plugin;
 import com.squareup.javapoet.*;
 import com.wiredi.annotations.Wire;
 import com.wiredi.compiler.domain.AbstractClassEntity;
+import com.wiredi.compiler.domain.Annotations;
 import com.wiredi.compiler.domain.WireRepositories;
 import com.wiredi.compiler.processor.lang.utils.TypeElements;
 import com.wiredi.kafka.api.KafkaListener;
-import com.wiredi.kafka.api.properties.KafkaListenerProperties;
-import com.wiredi.kafka.api.properties.KafkaProperties;
 import com.wiredi.kafka.plugin.methods.HandleMethod;
-import com.wiredi.runtime.WireRepository;
+import com.wiredi.runtime.WireContainer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.lang.model.element.ExecutableElement;
@@ -26,9 +25,10 @@ public class KafkaConsumerClassEntity extends AbstractClassEntity<KafkaConsumerC
             @NotNull ExecutableElement source,
             @NotNull TypeMirror rootElement,
             @NotNull String className,
+            Annotations annotations,
             WireRepositories wireRepositories
     ) {
-        super(source, rootElement, className);
+        super(source, rootElement, className, annotations);
         this.method = source;
         this.wireRepositories = wireRepositories;
     }
@@ -37,15 +37,15 @@ public class KafkaConsumerClassEntity extends AbstractClassEntity<KafkaConsumerC
         builder.addSuperinterface(ClassName.get(KafkaListener.class));
 
         addField(ClassName.get(kafkaListenerClass), "delegate", (it) -> it.addModifiers(Modifier.PRIVATE, Modifier.FINAL));
-        addField(WireRepository.class, "wireRepository", (it) -> it.addModifiers(Modifier.PRIVATE, Modifier.FINAL));
+        addField(WireContainer.class, "wireContainer", (it) -> it.addModifiers(Modifier.PRIVATE, Modifier.FINAL));
         addAnnotation(Wire.class);
 
         builder.addMethod(MethodSpec.constructorBuilder()
                 .addParameter(ParameterSpec.builder(ClassName.get(kafkaListenerClass), "delegate", Modifier.FINAL).addAnnotation(NotNull.class).build())
-                .addParameter(ParameterSpec.builder(WireRepository.class, "wireRepository", Modifier.FINAL).addAnnotation(NotNull.class).build())
+                .addParameter(ParameterSpec.builder(WireContainer.class, "wireContainer", Modifier.FINAL).addAnnotation(NotNull.class).build())
                 .addCode(CodeBlock.builder()
                         .addStatement("this.delegate = delegate")
-                        .addStatement("this.wireRepository = wireRepository")
+                        .addStatement("this.wireContainer = wireContainer")
                         .build())
                 .build()
         );

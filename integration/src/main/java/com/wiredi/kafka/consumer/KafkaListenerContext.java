@@ -1,15 +1,16 @@
 package com.wiredi.kafka.consumer;
 
 import com.wiredi.annotations.Wire;
+import com.wiredi.annotations.scopes.Prototype;
 import com.wiredi.kafka.consumer.ack.CommitStrategy;
 import com.wiredi.kafka.error.KafkaErrorHandler;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.jetbrains.annotations.NotNull;
 
 @Wire(
-        singleton = false,
         proxy = false
 )
+@Prototype
 public class KafkaListenerContext {
 
     @NotNull

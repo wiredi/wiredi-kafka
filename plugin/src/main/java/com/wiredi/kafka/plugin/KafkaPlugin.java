@@ -1,9 +1,10 @@
 package com.wiredi.kafka.plugin;
 
 import com.google.auto.service.AutoService;
+import com.wiredi.compiler.domain.Annotations;
 import com.wiredi.compiler.domain.WireRepositories;
 import com.wiredi.compiler.domain.entities.IdentifiableProviderEntity;
-import com.wiredi.compiler.logger.Logger;
+import com.wiredi.compiler.logger.slf4j.CompileTimeLogger;
 import com.wiredi.compiler.processor.lang.utils.TypeElements;
 import com.wiredi.compiler.processor.plugins.CompilerEntityPlugin;
 import com.wiredi.compiler.repository.CompilerRepository;
@@ -11,6 +12,8 @@ import com.wiredi.kafka.api.KafkaConsumer;
 import com.wiredi.kafka.plugin.methods.TopicMethod;
 import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -25,7 +28,7 @@ import static com.wiredi.compiler.domain.Annotations.isAnnotatedWith;
 @AutoService(CompilerEntityPlugin.class)
 public class KafkaPlugin implements CompilerEntityPlugin {
 
-    private static final Logger logger = Logger.get(KafkaPlugin.class);
+    private static final CompileTimeLogger logger = CompileTimeLogger.getLogger(KafkaPlugin.class);
 
     @Inject
     private CompilerRepository compilerRepository;
@@ -35,6 +38,9 @@ public class KafkaPlugin implements CompilerEntityPlugin {
 
     @Inject
     private Elements elements;
+
+    @Inject
+    private Annotations annotations;
 
     @Inject
     private WireRepositories wireRepositories;
@@ -70,6 +76,7 @@ public class KafkaPlugin implements CompilerEntityPlugin {
                 method,
                 parent.asType(),
                 nameOf(method, parent),
+                annotations,
                 wireRepositories
         ).delegateHandleMethod(typeElements, method)
                 .addConstructor(parent)

@@ -18,7 +18,7 @@ public class TestService {
     }
 
     public Timed runTestScenario() {
-        exampleListener.prime(100);
+        exampleListener.prime(1);
         return Timed.of(() -> {
             try {
                 publisher.publish("test", "key", "value").get();
@@ -26,6 +26,7 @@ public class TestService {
                 throw new RuntimeException(e);
             }
             exampleListener.await();
+            System.out.println("ExampleListener is started");
         });
     }
 }
